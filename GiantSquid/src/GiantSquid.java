@@ -22,10 +22,7 @@ public class GiantSquid {
         ArrayList<String> drawnNumbers = new ArrayList<>();
         HashMap<Integer, ArrayList<ArrayList<String>>> bingoCard = new HashMap<>();
 
-        int hasWinner = -1;
-       // boolean hasWinner = false;
-        String value = "";
-        int score = 0;
+
 
 
         // Get the list of drawn numbers
@@ -43,44 +40,11 @@ public class GiantSquid {
 
         // Create bingo card
         bingoCard = createHashMap(puzzleInput);
-        int index = 0;
+        getFirstWinningBoard(bingoCard, drawnNumbers);
 
         System.out.println("Bing cards:");
         // Play bingo
-        while (hasWinner == -1) {
-            System.out.println("Inside while: " + value);
-            if (index < drawnNumbers.size()) {
-               value = drawnNumbers.get(index);
-                System.out.println("Draw Number: " + value);
-            }
-            Set<Integer> setOfKeySet = bingoCard.keySet();
-            for(Integer key : setOfKeySet) {
-                System.out.println("\t Bingo card #" + key + ": ");
-                for (ArrayList<String> nums : bingoCard.get(key)) {
-                    for (String ball : nums) {
-                        if (ball.equals(value)) {
-                            int indexBall = nums.indexOf(ball);
-                            nums.set(indexBall, "X");
-                        }
-                    }
-                    System.out.println("\t\t" + nums);
-                }
 
-            }
-
-            hasWinner = checkWinner(bingoCard);
-
-            if (hasWinner > -1) {
-                System.out.println("Inside hasWinner");
-                System.out.println("Winning key: " + hasWinner);
-                break;
-            }
-
-            index++;
-        }
-        System.out.println(value);
-        score = getSum(bingoCard.get(hasWinner)) * Integer.valueOf(value);
-        System.out.println(score);
         puzzleInput.close();
     }
 
@@ -125,6 +89,47 @@ public class GiantSquid {
         return score;
     }*/
 
+    public static void getFirstWinningBoard(HashMap<Integer, ArrayList<ArrayList<String>>> bingoCard, ArrayList<String> drawnNumbers) {
+        int hasWinner = -1;
+        // boolean hasWinner = false;
+        String value = "";
+        int score = 0;
+        int index = 0;
+        while (hasWinner == -1) {
+            System.out.println("Inside while: " + value);
+            if (index < drawnNumbers.size()) {
+                value = drawnNumbers.get(index);
+                System.out.println("Draw Number: " + value);
+            }
+            Set<Integer> setOfKeySet = bingoCard.keySet();
+            for(Integer key : setOfKeySet) {
+                System.out.println("\t Bingo card #" + key + ": ");
+                for (ArrayList<String> nums : bingoCard.get(key)) {
+                    for (String ball : nums) {
+                        if (ball.equals(value)) {
+                            int indexBall = nums.indexOf(ball);
+                            nums.set(indexBall, "X");
+                        }
+                    }
+                    System.out.println("\t\t" + nums);
+                }
+
+            }
+
+            hasWinner = checkWinner(bingoCard);
+
+            if (hasWinner > -1) {
+                System.out.println("Inside hasWinner");
+                System.out.println("Winning key: " + hasWinner);
+                break;
+            }
+
+            index++;
+        }
+        System.out.println(value);
+        score = getSum(bingoCard.get(hasWinner)) * Integer.valueOf(value);
+        System.out.println(score);
+    }
     public static int checkWinner(HashMap<Integer, ArrayList<ArrayList<String>>> bingoCard) {
         int winner = checkWinnerHorizontal(bingoCard);
 
